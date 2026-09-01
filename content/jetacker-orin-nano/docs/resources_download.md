@@ -2,6 +2,8 @@
 
 - System Image & Source Code: If you want to get the system image and source code, please email us at support@hiwonder.com, and share your order number :)
 
+- Google Drive: [JetAcker Resources](https://drive.google.com/drive/folders/1vVnccIl8Oz0foGoSHk4Mkdn8Sk25ndFn?usp=sharing)
+
 - APP Installation Pack (Android): [WonderAi](https://play.google.com/store/apps/details?id=com.hiwonder.wonder_ai)
 
 - APP Installation Pack (iOS): [WonderAi](https://apps.apple.com/cn/app/wonderai/id1561134103)

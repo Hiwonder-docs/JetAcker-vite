@@ -7,7 +7,7 @@ import sharp from 'sharp'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const repositoryRoot = join(__dirname, '..')
 
-const projectName = process.env.DOCS_PROJECT || '/jetacker-orin-nano/'
+const projectName = process.env.DOCS_PROJECT || 'JetAcker'
 const version = process.env.DOCS_VERSION || process.argv[2]
 
 if (!version) {

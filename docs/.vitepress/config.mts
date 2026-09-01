@@ -18,6 +18,26 @@ function normalizeBase(value: string) {
   return `/${value.replace(/^\/+|\/+$/g, '')}/`
 }
 
+function addRedirectFallbackToHtml(code: string) {
+  if (!code.includes('class="page-redirect"') || code.includes('data-page-redirect-fallback')) {
+    return code
+  }
+
+  const targetMatch = code.match(/<a\s+[^>]*href="([^"]+)"[^>]*>\s*If you are not redirected automatically/i)
+  const target = targetMatch?.[1]
+  if (!target) {
+    return code
+  }
+
+  const script = `<script data-page-redirect-fallback>location.replace(${JSON.stringify(target)})</script>`
+  const meta = `<meta http-equiv="refresh" content="0;url=${escapeHtmlAttribute(target)}" data-page-redirect-fallback>`
+  const withMeta = code.includes('</head>') ? code.replace('</head>', `    ${meta}\n  </head>`) : code
+
+  return withMeta.includes('</body>')
+    ? withMeta.replace('</body>', `    ${script}\n  </body>`)
+    : `${withMeta}\n${script}`
+}
+
 function replaceOutsideInlineCode(line: string, replacer: (segment: string) => string) {
   return line
     .split(inlineCodePattern)
@@ -713,7 +733,7 @@ export default defineConfig({
   head: [['link', { rel: 'icon', href: `${docsBase}favicon.ico` }]],
   ignoreDeadLinks: true,
   transformHtml(code) {
-    return prepareHardLazyImages(code)
+    return addRedirectFallbackToHtml(prepareHardLazyImages(code))
   },
   vite: {
     assetsInclude: ['**/*.PNG', '**/*.JPG', '**/*.JPEG', '**/*.WEBP', '**/*.BMP', '**/*.ICO', '**/*.SVG', '**/*.MP4', '**/*.MOV', '**/*.AVI', '**/*.WAV', '**/*.MP3', '**/*.emf', '**/*.EMF', '**/*.wmf', '**/*.WMF', '**/*.GIF', '**/*.db'],
